@@ -30,4 +30,26 @@ cat forward.fa > tmp.fa
 cat flipReverseND.fa >> tmp.fa
 
 #removes the leftmost instance of the reverse adaptor in the correct configuration
-cutadapt -a AGATCGGAAGAGCACACGTCTG -e 0.2 --overlap 10 -o cleaned.fa tmp.fa
+cutadapt -a AGATCGGAAGAGCACACGTCTG -e 0.2 --overlap 10 -o noprimer.fa tmp.fa
+
+blastReads.sh noprimer.fa 1
+python ~/scripts/nanopore/cutReads.py 1_reads.tsv 1_filter.txt 1_filter.fa
+
+iteration=1
+
+while :
+do
+        nextIteration=$(($iteration + 1))
+        blastReads.sh ${iteration}_filter.fa $nextIteration
+        if [[ ! -s ${nextIteration}_filter.txt ]];
+        then
+                #statements
+                echo "file is empty"
+                appendReads.sh ${iteration}_filter.fa ${nextIteration}_readnames.txt
+                break
+        else
+                appendReads.sh ${iteration}_filter.fa ${nextIteration}_readnames.txt
+                python ~/scripts/nanopore/cutReads.py ${nextIteration}_reads.tsv ${nextIteration}_filter.txt ${nextIteration}_filter.fa
+                iteration=$(($iteration + 1))
+        fi
+done
