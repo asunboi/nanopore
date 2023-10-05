@@ -1,12 +1,13 @@
 #!/bin/bash
 
-mkdir cleaning
+mkdir $1
+mkdir $1/cleaning
 
 dir_name=`pwd`
 barcode=${dir_name##*/}
 
-cat *.gz > cleaning/${barcode}.fastq.gz
-cd cleaning
+cat *.gz > $1/cleaning/${barcode}.fastq.gz
+cd $1/cleaning
 
 gunzip ${barcode}.fastq.gz
 
@@ -47,31 +48,40 @@ do
         then
                 #statements
                 echo "no more forward reporter regions"
-                appendReads.sh ${iteration}_filter.fa ${nextIteration}_readnames.txt
+                appendReads.sh ${iteration}_filter.fa ${nextIteration}_readnames.txt 'noForwardRep.fa'
                 break
         else
-                appendReads.sh ${iteration}_filter.fa ${nextIteration}_readnames.txt
+                appendReads.sh ${iteration}_filter.fa ${nextIteration}_readnames.txt 'noForwardRep.fa'
                 python ~/scripts/nanopore/cutReads.py ${nextIteration}_reads.tsv ${nextIteration}_filter.txt ${nextIteration}_filter.fa
-                iteration=$(($iteration + 1))
+                iteration=$(($iteration + 1))   
         fi
 done
 
 ### blasting and removing reverse reporter portions ###
 
+inputFile='noForwardRep.fa'
+
 while :
 do
         nextIteration=$(($iteration + 1))
-        blastReads.sh ${iteration}_filter.fa $nextIteration 'minus'
+        blastReads.sh $inputFile $nextIteration 'minus'
         if [[ ! -s ${nextIteration}_filter.txt ]];
         then
                 #statements
                 echo "no more reverse reporter regions"
-                appendReads.sh ${iteration}_filter.fa ${nextIteration}_readnames.txt
+                appendReads.sh $inputFile ${nextIteration}_readnames.txt 'noReverseRep.fa'
                 break
         else
-                appendReads.sh ${iteration}_filter.fa ${nextIteration}_readnames.txt
+                appendReads.sh $inputFile ${nextIteration}_readnames.txt 'noReverseRep.fa'
                 python ~/scripts/nanopore/cutReads.py ${nextIteration}_reads.tsv ${nextIteration}_filter.txt ${nextIteration}_filter.fa
+                inputFile=${nextIteration}_filter.fa
                 iteration=$(($iteration + 1))
         fi
 done
+
+## output is noReverseRep.fa
+
+RepeatMasker -noint noReverseRep.fa
+
+awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' < noReverseRep.fa.masked | sed 's/N//g' | tr "\t" "\n" > cleaned.fa
 
