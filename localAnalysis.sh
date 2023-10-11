@@ -1,7 +1,10 @@
 #!/bin/bash
+    
+module load python
 
 mkdir $1
 mkdir $1/cleaning
+mkdir $1/clustering
 
 ### check whether the compiled fasta has already been made - if not, make it.
 dir_name=`pwd`
@@ -36,6 +39,9 @@ cat flipReverseND.fa >> tmp.fa
 
 #removes the leftmost instance of the reverse adaptor in the correct configuration (4x)
 cutadapt -a AGATCGGAAGAGCACACGTCTG -e 0.2 --overlap 10 -n 4 -o noprimer.fa tmp.fa
+
+### scuffed symlink, TODO
+cp tmp.fa ../clustering/original.fa
 
 ### blasting and removing forward reporter portions ###
 
@@ -87,4 +93,14 @@ done
 
 RepeatMasker -noint noReverseRep.fa
 
-awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' < noReverseRep.fa.masked | sed 's/N//g' | tr "\t" "\n" > cleaned.fa
+awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' < noReverseRep.fa.masked | sed 's/N//g' | tr "\t" "\n" > noSimple.fa
+
+seqtk seq -L 50 noSimple.fa > cleaned.fa
+
+cd ..
+
+cp cleaning/cleaned.fa clustering/trimmed.fasta
+
+cd clustering
+
+sbatch ~/scripts/nanopore/cluster.sbatch
