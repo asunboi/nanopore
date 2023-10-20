@@ -58,7 +58,7 @@ cp tmp.fa ../clustering/original.fa
 ### blasting and removing forward reporter portions ###
 
 blastReads.sh noprimer.fa 1 'plus'
-python ~/scripts/nanopore/cutReads.py 1_reads.tsv 1_filter.txt 1_filter.fa
+python ~/scripts/nanopore/cutReads.py 1_reads.tsv 1_filter.txt 1_filter
 
 iteration=1
 
@@ -74,7 +74,7 @@ do
                 break
         else
                 appendReads.sh ${iteration}_filter.fa ${nextIteration}_readnames.txt 'noForwardRep.fa'
-                python ~/scripts/nanopore/cutReads.py ${nextIteration}_reads.tsv ${nextIteration}_filter.txt ${nextIteration}_filter.fa
+                python ~/scripts/nanopore/cutReads.py ${nextIteration}_reads.tsv ${nextIteration}_filter.txt ${nextIteration}_filter
                 iteration=$(($iteration + 1))   
         fi
 done
@@ -95,7 +95,7 @@ do
                 break
         else
                 appendReads.sh $inputFile ${nextIteration}_readnames.txt 'noReverseRep.fa'
-                python ~/scripts/nanopore/cutReads.py ${nextIteration}_reads.tsv ${nextIteration}_filter.txt ${nextIteration}_filter.fa
+                python ~/scripts/nanopore/cutReads.py ${nextIteration}_reads.tsv ${nextIteration}_filter.txt ${nextIteration}_filter
                 inputFile=${nextIteration}_filter.fa
                 iteration=$(($iteration + 1))
         fi
