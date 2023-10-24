@@ -4,6 +4,7 @@ import pandas as pd
 import sys
 from itertools import islice
 import ast
+import json
 
 def create_tuples(array1, string1):
     result_tuples = []
@@ -121,3 +122,8 @@ for key, value in substringsDict.items():
     f.write(">" + key + '\n')
     f.write(LHS + '\n')
 f.close()
+
+output_file = "all.substrings.json"
+# Write the dictionary to a JSON file
+with open(output_file, "w") as file:
+    json.dump(substringsDict, file)

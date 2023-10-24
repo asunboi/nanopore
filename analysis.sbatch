@@ -4,13 +4,11 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=24gb
 #SBATCH --time=24:00:00
+#SBATCH --output=./analysis.out
 
 module load python
 
-mkdir $1
-mkdir $1/cleaning
-mkdir $1/clustering
-mkdir $1/tong
+cd ..
 
 ### check whether the compiled fasta has already been made - if not, make it.
 dir_name=`pwd`
