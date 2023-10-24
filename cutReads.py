@@ -25,7 +25,7 @@ def remaining_sections(readName, read, matches):
             adjusted_start = current_start - total_removed
             adjusted_end = start - total_removed - 1
             adjusted_range = (adjusted_start, adjusted_end)
-            remaining_matches.append([(adjusted_start, adjusted_end), (current_start, start - 1)])
+            remaining_matches.append([(adjusted_start, adjusted_end), (current_start, start - 1), total_removed])
         current_start = end + 1
         total_removed += end - start + 1
 
@@ -33,7 +33,7 @@ def remaining_sections(readName, read, matches):
         adjusted_start = current_start - total_removed
         adjusted_end = readLength - total_removed
         adjusted_range = (adjusted_start, adjusted_end)
-        remaining_matches.append([(adjusted_start, adjusted_end), (current_start, readLength)])
+        remaining_matches.append([(adjusted_start, adjusted_end), (current_start, readLength), total_removed])
 
     return remaining_matches
 
@@ -87,19 +87,19 @@ for i in paramsDict:
     substringArray.append(substring)
     paramsDict[i][0] = newRead
 
-f = open(sys.argv[3] + ".remaining.txt", "w")
+f = open(str(sys.argv[3]) + ".remaining.txt", "w")
 for value in remainingArray:
     f.write(str(value) + '\n')
 f.close()
 
-f = open(sys.argv[3] + ".substrings.txt", "w")
+f = open(str(sys.argv[3]) + ".substrings.txt", "w")
 for value in substringArray:
     f.write(str(value) + '\n')
 f.close()
 
-f = open(sys.argv[3] + ".fa", "w")
+f = open(str(sys.argv[3]) + ".fa", "w")
 for key, value in paramsDict.items():
-    if(len(value[0] > 0):
+    if (len(value[0]) > 0):
         f.write(">" + key + '\n')
         f.write(value[0] + '\n')
 f.close()

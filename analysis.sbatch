@@ -24,7 +24,9 @@ fi
 
 cd $1/tong 
 
-sbatch ~/scripts/nanopore/tong.sbatch ../../${barcode}.fastq
+
+### TURNING OFF TONG'S SCRIPT FOR NOW ###
+#sbatch ~/scripts/nanopore/tong.sbatch ../../${barcode}.fastq
 
 cd ..
 
@@ -101,18 +103,23 @@ do
         fi
 done
 
+ls *.remaining.txt > all.remaining.txt
+
+python ~/scripts/nanopore/recreateLHS.py
+
 ## output is noReverseRep.fa
 
 RepeatMasker -noint noReverseRep.fa
 
 awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' < noReverseRep.fa.masked | sed 's/N//g' | tr "\t" "\n" > noSimple.fa
 
-seqtk seq -L 50 noSimple.fa > cleaned.fa
+seqtk seq -L 50 noSimple.fa > RHS.fa
 
 cd ..
 
-cp cleaning/cleaned.fa clustering/trimmed.fasta
+mv cleaning/RHS.fa clustering
+mv cleaning/LHS.fa clustering
 
 cd clustering
 
-sbatch ~/scripts/nanopore/cluster.sbatch
+sbatch ~/scripts/nanopore/clusterRegion.sbatch
