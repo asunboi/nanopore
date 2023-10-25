@@ -1,3 +1,3 @@
 # nanopore
 BIR Nanopore Code for XWU Lab
-![Linear Nanopore Pipeline](https://github.com/asunboi/nanopore/assets/66139370/014822c3-2710-4dbf-b271-0d7934688d27)
+![Linear Nanopore Pipeline (1)](https://github.com/asunboi/nanopore/assets/66139370/a40a857c-51bf-4db3-a499-e32380d27f00)
