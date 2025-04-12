@@ -1,0 +1,158 @@
+Blast4-request ::= {
+  body queue-search {
+    program "blastn",
+    service "plain",
+    queries bioseq-set {
+      seq-set {
+        seq {
+          id {
+            local str "Query_120741"
+          },
+          descr {
+            user {
+              type str "CFastaReader",
+              data {
+                {
+                  label str "DefLine",
+                  data str ">"
+                }
+              }
+            }
+          },
+          inst {
+            repr raw,
+            mol na,
+            length 22,
+            seq-data ncbi2na '236822446DE0'H
+          }
+        }
+      }
+    },
+    subject sequences {
+      {
+        id {
+          local str "Query_120743"
+        },
+        descr {
+          user {
+            type str "CFastaReader",
+            data {
+              {
+                label str "DefLine",
+                data str ">"
+              }
+            }
+          },
+          molinfo {
+            biomol genomic
+          }
+        },
+        inst {
+          repr raw,
+          mol dna,
+          length 2754,
+          seq-data ncbi2na '3FB8AFF1F9FC0017445D57817804C038390FBEFBC1FBF3E49F
+30EBC40C090C93440FD103024FFF4793D7AFBAFED4074D0ECDF27721B7A16AD1E48DA0891B78DA
+0A911B78DA08911B78D6822446DE36822446DE368206DE3688911B78DA291B78D895B78DA08911
+B78DA0811B4A22444D8DA08911B78DA08911B78D8911B57A82A4B78D4A2246DE37A1489E0E8206
+D12D291B78D29116312DA089116C4B6891B78DA22446D12DA08916C4B68291B45ADA0A45B7B6B5
+3328D896C4B68291B44B6246D2DA0891B78DA0A46DE36822446DE36822446DE36822646DE36822
+646DE36828911B78DA08911B7A3684A48DA0911B788DA189EDB682246D2DA0A8911B78DA006DE3
+6822446DE36822446DE36822446DE368206DE36822446DE36822446DE36822446DE36822446DE3
+6822446DE3682246DE36822446DE36822446DE36822446DE36822446DE36822446DE36822446DE
+36822466DE36822446DE35891B78DA08911B78DA08911B78DA08911B78DA0891B78DA082446DE3
+682246DE36822446DE8DA08911B7B682446FA36822446DE46B48DA08911B79F9F6918DA08911B7
+997D68DA08911B79F39D23682246DE7E7D308DA08911B7ADE4D4236822446DE368627B8DA82244
+6DE85148DA0891B7A145236822446DE85348DA08911B7A153E2368A446DE854F88DA08911B7A15
+3E236822446DE853CABA08911B7A153E236822446DE854F88DA08911B7A153E236822446DE8523
+6822446DE854F88DA08911B7A17B88DA08911B7A597A88DA0A911B7B8E5A236822446DEA6E82D2
+822466DEA6E888DA08911B7B9BFA236822446DEE6FE88DA08911139BA0DA08911B7B9BFA236822
+446DEE6FE88DA08911B7B9BFA236822446DEE6FE88E829FC6DEE6FE88D226DE2A9E48DA08911B7
+8AA7908DA08911B78AA7908D89B78AA794236822446DE2A9E4236822446DE189EC4C8D282245B7
+80'H
+        }
+      }
+    },
+    algorithm-options {
+      {
+        name "EvalueThreshold",
+        value cutoff e-value { 1, 10, 3 }
+      },
+      {
+        name "UngappedMode",
+        value boolean FALSE
+      },
+      {
+        name "PercentIdentity",
+        value real { 0, 10, 0 }
+      },
+      {
+        name "HitlistSize",
+        value integer 100
+      },
+      {
+        name "EffectiveSearchSpace",
+        value big-integer 0
+      },
+      {
+        name "DbLength",
+        value big-integer 0
+      },
+      {
+        name "WindowSize",
+        value integer 0
+      },
+      {
+        name "DustFiltering",
+        value boolean FALSE
+      },
+      {
+        name "RepeatFiltering",
+        value boolean FALSE
+      },
+      {
+        name "MaskAtHash",
+        value boolean FALSE
+      },
+      {
+        name "MismatchPenalty",
+        value integer -3
+      },
+      {
+        name "MatchReward",
+        value integer 1
+      },
+      {
+        name "GapOpeningCost",
+        value integer 5
+      },
+      {
+        name "GapExtensionCost",
+        value integer 2
+      },
+      {
+        name "StrandOption",
+        value strand-type both-strands
+      },
+      {
+        name "WordSize",
+        value integer 7
+      }
+    },
+    format-options {
+      {
+        name "Web_JobTitle",
+        value string "Nucleotide Sequence"
+      },
+      {
+        name "Web_BlastSpecialPage",
+        value string "blast2seq"
+      },
+      {
+        name "Web_ShortQueryAdjust",
+        value boolean TRUE
+      }
+    }
+  }
+}
+
